@@ -9,12 +9,6 @@ type AdminController struct{
 	ctx iris.Context
 }
 
-func (c *AdminController) GetLogin() mvc.View {
-	return mvc.View{
-		Name: "admin/login.html",
-	}
-}
-
-func (c *AdminController)PostLogin() {
-	
+func (c *AdminController) PostLogin() mvc.Result{
+	iris.New().Logger().Info("admin login")
 }
