@@ -1,22 +1,30 @@
 package service
 
 import (
-	"myweb/BYSJ/datasource"
+	"fmt"
 	"myweb/BYSJ/model"
 
 	"github.com/go-xorm/xorm"
 )
 
+type AdminService interface {
+	GetByAdminNameAndPassword(username, password string) (model.Admin, bool)
+}
 
+func NewAdminService(db *xorm.Engine) AdminService {
+	return &adminService{
+		engine: db,
+	}
+}
+type adminService struct{
+	engine *xorm.Engine
+}
+func (ac *adminService) GetByAdminNameAndPassword(username, password string) (model.Admin, bool) {
+	var admin model.Admin
 
-func AdminLogin(username string,password string) (model.Admin,error){
-	admin:=&model.Admin{AdminName: username,Pwd: password}
-	has,err :=datasource.engine.Get(admin)
-	if err!=nil {
-		return nil,err
-	}
-	if !has {
-		return nil,nil		
-	}
-	return admin,nil
+	ac.engine.Where("admin_name = ? and pwd = ? ", username, password).Get(&admin)
+
+	fmt.Println(admin, "............", admin.AdminId != 0)
+
+	return admin, admin.AdminId != 0
 }
