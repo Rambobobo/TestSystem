@@ -10,7 +10,7 @@ import (
 type AdminService interface {
 	GetByAdminNameAndPassword(username, password string) (model.Admin, bool)
 }
-
+//工厂函数
 func NewAdminService(db *xorm.Engine) AdminService {
 	return &adminService{
 		engine: db,
